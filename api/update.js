@@ -13,13 +13,18 @@ export default async function handler(req, res) {
   ];
 
   const proxy = 'https://solvedac-profile-theta.vercel.app/api/proxy?url=';
-
   const profiles = [];
 
   for (const user of users) {
     try {
       const url = proxy + encodeURIComponent(`https://solved.ac/api/v3/user/show?handle=${user.handle}`);
       const response = await fetch(url);
+
+      if (!response.ok) {
+        console.error(`${user.handle} 요청 실패`);
+        continue;
+      }
+
       const data = await response.json();
 
       profiles.push({
@@ -29,12 +34,13 @@ export default async function handler(req, res) {
         rating: data.rating,
         maxStreak: data.maxStreak
       });
+
     } catch (e) {
-      console.error(`❌ ${user.handle} 불러오기 실패`, e);
+      console.error(`${user.handle} 처리 중 에러:`, e);
     }
   }
 
   profiles.sort((a, b) => b.rating - a.rating);
 
-  return res.status(200).json(profiles);
+  res.status(200).json(profiles);
 }
