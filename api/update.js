@@ -9,7 +9,8 @@ export default async function handler(req, res) {
     { name: "신동수", handle: "tlsehdtn12" },
     { name: "이나연", handle: "leenayeon0915" },
     { name: "김준혁", handle: "ddo0122" },
-    { name: "변가은", handle: "qusrkdms3" }
+    { name: "변가은", handle: "qusrkdms3" },
+    { name: "황채린", handle: "hchrin" }
   ];
 
   const proxy = 'https://solvedac-profile-theta.vercel.app/api/proxy?url=';
