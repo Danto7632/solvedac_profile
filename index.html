@@ -5,48 +5,81 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>solved.ac 프로필 카드</title>
   <style>
+    :root {
+      --bg-color: #f9fafb;
+      --card-bg: #ffffff;
+      --text-color: #111827;
+      --sub-text: #6b7280;
+      --accent: #3b82f6;
+      --shadow: rgba(0, 0, 0, 0.05);
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
       margin: 0;
-      padding: 20px;
+      padding: 2rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
     }
 
     h2 {
       text-align: center;
-      color: #333;
+      margin-bottom: 2rem;
+      font-size: 2rem;
     }
 
     #container {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      max-width: 900px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 1000px;
       margin: 0 auto;
     }
 
     .card {
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      text-align: left;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      background-color: var(--card-bg);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 8px var(--shadow);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
     }
 
     .card h3 {
-      margin: 0 0 10px 0;
+      margin: 0 0 0.5rem 0;
+      font-size: 1.2rem;
+      color: var(--accent);
     }
 
     .card p {
-      margin: 5px 0;
+      margin: 0.3rem 0;
+      color: var(--sub-text);
+      font-size: 0.95rem;
     }
 
     .card a {
-      color: #1e88e5;
+      margin-top: 0.5rem;
+      display: inline-block;
+      font-size: 0.9rem;
+      color: var(--accent);
       text-decoration: none;
+    }
+
+    .card a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
@@ -74,7 +107,7 @@
             <p>티어: ${tierDisplay}</p>
             <p>점수: ${profile.rating}</p>
             <p>최대 스트릭: ${profile.maxStreak}일</p>
-            <a href="https://solved.ac/profile/${profile.handle}" target="_blank">solved.ac 프로필 보기</a>
+            <a href="https://solved.ac/profile/${profile.handle}" target="_blank">🔗 프로필 보기</a>
           `;
           container.appendChild(card);
         });
