@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>solved.ac 프로필 카드</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    #container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .card h3 {
+      margin: 0 0 10px 0;
+    }
+
+    .card p {
+      margin: 5px 0;
+    }
+
+    .card a {
+      color: #1e88e5;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>solved.ac 프로필 랭킹</h2>
+  <div id="container"></div>
+
+  <script>
+    async function loadProfiles() {
+      try {
+        const res = await fetch('/data/profiles.json');
+        const profiles = await res.json();
+
+        const container = document.getElementById("container");
+        profiles.forEach(profile => {
+          const tierName = ["", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Ruby"];
+          const tierIndex = Math.floor(profile.tier / 5);
+          const tierLevel = profile.tier % 5;
+          const tierDisplay = `${tierName[tierIndex] || "Unranked"} ${tierLevel}`;
+
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <h3>${profile.name} (${profile.handle})</h3>
+            <p>티어: ${tierDisplay}</p>
+            <p>점수: ${profile.rating}</p>
+            <p>최대 스트릭: ${profile.maxStreak}일</p>
+            <a href="https://solved.ac/profile/${profile.handle}" target="_blank">solved.ac 프로필 보기</a>
+          `;
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error("프로필 데이터를 불러오는 데 실패했습니다.", err);
+      }
+    }
+
+    loadProfiles();
+  </script>
+</body>
+</html>
