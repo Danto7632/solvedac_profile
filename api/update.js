@@ -1,6 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-
 export default async function handler(req, res) {
   const users = [
     { name: "김인성", handle: "danto7632" },
@@ -20,23 +17,24 @@ export default async function handler(req, res) {
   const profiles = [];
 
   for (const user of users) {
-    const url = proxy + encodeURIComponent(`https://solved.ac/api/v3/user/show?handle=${user.handle}`);
-    const res = await fetch(url);
-    const data = await res.json();
+    try {
+      const url = proxy + encodeURIComponent(`https://solved.ac/api/v3/user/show?handle=${user.handle}`);
+      const response = await fetch(url);
+      const data = await response.json();
 
-    profiles.push({
-      name: user.name,
-      handle: user.handle,
-      tier: data.tier,
-      rating: data.rating,
-      maxStreak: data.maxStreak
-    });
+      profiles.push({
+        name: user.name,
+        handle: user.handle,
+        tier: data.tier,
+        rating: data.rating,
+        maxStreak: data.maxStreak
+      });
+    } catch (e) {
+      console.error(`❌ ${user.handle} 불러오기 실패`, e);
+    }
   }
 
   profiles.sort((a, b) => b.rating - a.rating);
 
-  const filePath = path.resolve('./data/profiles.json');
-  fs.writeFileSync(filePath, JSON.stringify(profiles, null, 2), 'utf-8');
-
-  return res.status(200).send('Updated successfully!');
+  return res.status(200).json(profiles);
 }
