@@ -72,6 +72,13 @@
       text-decoration: underline;
     }
 
+    .tier-image {
+      width: 100%;
+      max-width: 300px;
+      margin: 10px 0;
+      border-radius: 8px;
+    }
+
     @media (max-width: 600px) {
       body {
         padding: 1rem;
@@ -104,7 +111,7 @@
           card.className = "card";
           card.innerHTML = `
             <h3>${profile.name} (${profile.handle})</h3>
-            <p>티어: ${tierDisplay}</p>
+            <img src="https://mazassumnida.wtf/api/v2/generate_badge?boj=${profile.handle}" alt="티어 이미지" class="tier-image" />
             <p>점수: ${profile.rating}</p>
             <p>최대 스트릭: ${profile.maxStreak}일</p>
             <a href="https://solved.ac/profile/${profile.handle}" target="_blank">🔗 프로필 보기</a>
