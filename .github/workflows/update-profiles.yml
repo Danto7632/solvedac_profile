@@ -2,7 +2,7 @@ name: Update solved.ac profiles
 
 on:
   schedule:
-    - cron: '0 21 * * *' # 매일 오전 9시 KST (0:00 UTC)
+    - cron: '0 21 * * *'  # 매일 오전 6시 (KST)
   workflow_dispatch:
 
 jobs:
@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # <-- 중요! rebase 가능하게 전체 커밋 가져오기
 
       - name: Fetch profile data from Vercel API
         run: |
