@@ -2,8 +2,8 @@ name: Update solved.ac profiles
 
 on:
   schedule:
-    - cron: '0 21 * * *'  # 매일 오전 6시 (KST) = UTC 21시
-  workflow_dispatch:
+    - cron: '0 21 * * *' # 매일 9:00 KST (0:00 UTC)
+  workflow_dispatch: # 수동 실행도 가능
 
 jobs:
   update:
@@ -11,23 +11,15 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # pull/rebase 가능하게 전체 히스토리 가져오기
 
       - name: Fetch profile data from Vercel API
         run: |
           curl -s "https://solvedac-profile-theta.vercel.app/api/update" > data/profiles.json
 
-      - name: Configure Git
+      - name: Commit and push changes
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-
-      - name: Pull latest changes before pushing
-        run: git pull origin main --rebase || true  # 충돌 무시하고 진행
-
-      - name: Commit and push changes
-        run: |
           git add data/profiles.json
           git commit -m "🔄 자동 업데이트: solved.ac 프로필" || echo "No changes to commit"
           git push
