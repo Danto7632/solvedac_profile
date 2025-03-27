@@ -12,7 +12,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # <-- 중요! rebase 가능하게 전체 커밋 가져오기
+          fetch-depth: 0
 
       - name: Fetch profile data from Vercel API
         run: |
@@ -24,7 +24,7 @@ jobs:
           git config --global user.email "action@github.com"
 
       - name: Pull latest changes before pushing
-        run: git pull origin main --rebase
+        run: git pull origin main --rebase || true  # <- 여기 포인트!
 
       - name: Commit and push changes
         run: |
