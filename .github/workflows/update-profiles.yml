@@ -2,7 +2,7 @@ name: Update solved.ac profiles
 
 on:
   schedule:
-    - cron: '0 21 * * *'  # 매일 오전 6시 (KST)
+    - cron: '0 21 * * *'  # 매일 오전 6시 (KST) = UTC 21시
   workflow_dispatch:
 
 jobs:
@@ -12,7 +12,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # pull/rebase 가능하게 전체 히스토리 가져오기
 
       - name: Fetch profile data from Vercel API
         run: |
@@ -24,7 +24,7 @@ jobs:
           git config --global user.email "action@github.com"
 
       - name: Pull latest changes before pushing
-        run: git pull origin main --rebase || true  # <- 여기 포인트!
+        run: git pull origin main --rebase || true  # 충돌 무시하고 진행
 
       - name: Commit and push changes
         run: |
