@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>solved.ac 프로필 카드</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    #container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .card h3 {
+      margin: 0 0 10px 0;
+    }
+
+    .card p {
+      margin: 5px 0;
+    }
+
+    .card a {
+      color: #1e88e5;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>solved.ac 프로필 랭킹</h2>
+  <div id="container"></div>
+
+  <script>
+    const users = [
+      { name: "김인성", handle: "danto7632" },
+      { name: "이연호", handle: "yeonho2010" },
+      { name: "김성민", handle: "kksm0403" },
+      { name: "박세린", handle: "tpfls" },
+      { name: "조혜인", handle: "chi031114" },
+      { name: "이세연", handle: "tpdus3151" },
+      { name: "신동수", handle: "tlsehdtn12" },
+      { name: "이나연", handle: "leenayeon0915" },
+      { name: "김준혁", handle: "ddo0122" },
+      { name: "변가은", handle: "qusrkdms3" }
+    ];
+
+    const proxy = "https://YOUR_VERCEL_URL_HERE.vercel.app/api/proxy?url=";
+    const container = document.getElementById("container");
+
+    async function fetchProfiles() {
+      const profiles = [];
+
+      for (const user of users) {
+        try {
+          const res = await fetch(proxy + encodeURIComponent(`https://solved.ac/api/v3/user/show?handle=${user.handle}`));
+          const data = await res.json();
+
+          profiles.push({
+            name: user.name,
+            handle: user.handle,
+            tier: data.tier,
+            rating: data.rating,
+            maxStreak: data.maxStreak
+          });
+        } catch (e) {
+          console.error("Error fetching:", user.handle);
+        }
+      }
+
+      profiles.sort((a, b) => b.rating - a.rating);
+
+      for (const profile of profiles) {
+        const tierName = ["", "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Ruby"];
+        const tierIndex = Math.floor(profile.tier / 5);
+        const tierLevel = profile.tier % 5;
+        const tierDisplay = `${tierName[tierIndex] || "Unranked"} ${tierLevel}`;
+
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${profile.name} (${profile.handle})</h3>
+          <p>티어: ${tierDisplay}</p>
+          <p>점수: ${profile.rating}</p>
+          <p>최대 스트릭: ${profile.maxStreak}일</p>
+          <a href="https://solved.ac/profile/${profile.handle}" target="_blank">solved.ac 프로필 보기</a>
+        `;
+        container.appendChild(card);
+      }
+    }
+
+    fetchProfiles();
+  </script>
+</body>
+</html>
