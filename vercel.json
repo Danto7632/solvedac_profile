@@ -1,4 +1,11 @@
 {
     "rewrites": [{ "source": "/proxy", "destination": "/api/proxy" }]
   }
-  
+  {
+  "crons": [
+    {
+      "path": "/api/update",
+      "schedule": "0 9 * * *"
+    }
+  ]
+}
