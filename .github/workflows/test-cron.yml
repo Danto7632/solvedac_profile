@@ -1,16 +1,16 @@
-name: ⏱️ 테스트: 2분 간격 cron
+name: test-cron-every-2-min
 
 on:
   schedule:
-    - cron: '*/2 * * * *'  # 매 2분마다 실행
-  workflow_dispatch:        # 수동 실행도 가능
+    - cron: '*/2 * * * *'  # every 2 minutes
+  workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: ⏰ 현재 시간 출력
-        run: echo "✅ 현재 시간: $(date -u)"
+      - name: Print current time
+        run: echo "✅ Current time: $(date -u)"
 
-      - name: ✅ 워크플로우 성공 테스트
-        run: echo "크론 테스트 완료!"
+      - name: Test complete
+        run: echo "Cron job ran successfully!"
