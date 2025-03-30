@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print current time
-        run: echo "✅ Current time: $(date -u)"
+        run: |
+          echo "Current time: $(date -u)"
 
       - name: Test complete
         run: echo "Cron job ran successfully!"
