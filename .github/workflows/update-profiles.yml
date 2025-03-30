@@ -8,21 +8,23 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-attempts: 3
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Fetch profile data from Vercel API
+      - name: Fetch profile data with retry
         run: |
-          curl -s "https://solvedac-profile-theta.vercel.app/api/update" > data/profiles.json
+          for i in {1..3}; do
+            echo "시도 $i..."
+            curl -s "https://solvedac-profile-theta.vercel.app/api/update" > data/profiles.json && break
+            echo "실패함. 3초 후 재시도..."
+            sleep 3
+          done
 
       - name: Force commit with timestamp
         run: |
-         echo "Last updated: $(date)" > data/timestamp.txt
+          echo "Last updated: $(date)" > data/timestamp.txt
 
       - name: Commit and push changes
         run: |
