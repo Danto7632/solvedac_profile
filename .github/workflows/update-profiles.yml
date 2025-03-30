@@ -2,7 +2,7 @@ name: Update solved.ac profiles
 
 on:
   schedule:
-    - cron: '0 21 * * *'  # ⏰ 매일 오전 6시 KST (0:00 UTC)
+    - cron: '0 * * * *'  # ⏰ 매 정각 1시간마다 실행
   workflow_dispatch:      # 👆 수동 실행도 가능
 
 jobs:
@@ -21,7 +21,7 @@ jobs:
             echo "❌ 실패 - 5초 후 재시도..."
             sleep 5
           done
-          
+
       - name: Commit and push changes
         run: |
           git config --global user.name "GitHub Action"
