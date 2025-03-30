@@ -21,11 +21,7 @@ jobs:
             echo "❌ 실패 - 5초 후 재시도..."
             sleep 5
           done
-
-      - name: Force commit with timestamp
-        run: |
-          echo "Last updated: $(date)" > data/timestamp.txt
-
+          
       - name: Commit and push changes
         run: |
           git config --global user.name "GitHub Action"
