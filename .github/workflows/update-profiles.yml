@@ -21,7 +21,8 @@ jobs:
           curl -s "https://solvedac-profile-theta.vercel.app/api/update" > data/profiles.json
 
       - name: Force commit with timestamp
-        run: echo "Last updated: $(date)" > data/timestamp.txt
+        run: |
+         echo "Last updated: $(date)" > data/timestamp.txt
 
       - name: Commit and push changes
         run: |
