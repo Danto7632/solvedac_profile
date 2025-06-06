@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       const response = await fetch(url);
 
       if (!response.ok) {
-        console.error(`${user.handle} 요청 실패`);
+        console.error(`${user.handle} 요청 실패 (status: ${response.status})`);
         continue;
       }
 
@@ -31,13 +31,15 @@ export default async function handler(req, res) {
       profiles.push({
         name: user.name,
         handle: user.handle,
-        tier: data.tier,
-        rating: data.rating,
-        maxStreak: data.maxStreak
+        tier: data.tier ?? 0,
+        rating: data.rating ?? 0,
+        maxStreak: data.maxStreak ?? 0,
+        class: data.class ?? 0,
+        classDecoration: data.classDecoration ?? "none"
       });
 
     } catch (e) {
-      console.error(`${user.handle} 처리 중 에러:`, e);
+      console.error(`${user.handle} 처리 중 에러:`, e.message);
     }
   }
 
