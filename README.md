@@ -23,6 +23,8 @@
 
 ```
 solvedac_profile/
+├── .github/workflows/
+│   └── update-profiles.yml  # GitHub Actions 자동 업데이트 워크플로우
 ├── api/
 │   ├── proxy.js          # CORS 우회를 위한 프록시 서버
 │   └── update.js         # solved.ac API 데이터 수집 및 업데이트
@@ -69,8 +71,17 @@ const users = [
 ```
 
 ### 자동 데이터 갱신
-- 배포 시 자동 업데이트
-- `/api/update` 직접 호출로 수동 갱신 가능
+
+#### ⏰ 업데이트 주기
+- **매시간 정각**: GitHub Actions를 통한 자동 업데이트 (1시간마다)
+- **실시간 반영**: solved.ac 데이터 변경 후 최대 1시간 내 웹사이트에 반영
+- **스트릭 초기화 대응**: solved.ac 오전 6시 스트릭 초기화 시점 고려한 업데이트
+- **재시도 로직**: API 호출 실패 시 최대 3회 자동 재시도
+
+#### 🔄 업데이트 방식
+- **자동**: GitHub Actions 스케줄러 (cron: `0 * * * *`)
+- **수동**: GitHub Actions 워크플로우 수동 실행
+- **즉시**: `/api/update` 엔드포인트 직접 호출
 
 ## 📊 데이터 구조
 
@@ -105,6 +116,7 @@ const users = [
 - solved.ac API v3 실시간 데이터 수집
 - CORS 우회를 위한 프록시 서버
 - 레이팅 기준 자동 정렬
+- **스트릭 추적 최적화**: solved.ac 오전 6시 일일 초기화 시점을 고려한 데이터 수집
 - 에러 발생 시 부분 데이터라도 서비스 제공
 
 ### UI/UX
